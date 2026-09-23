@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>New Tab</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "Nunito", sans-serif;
+}
+
+body {
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   LOGIN SCREEN
+========================================================= */
+
+#loginScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    url("login-bg.jpg")
+    center center /
+    cover
+    no-repeat;
+
+  transition:
+    opacity 1s ease,
+    transform 1s ease,
+    visibility 1s ease;
+}
+
+#loginScreen.hide {
+  opacity: 0;
+  transform: scale(1.08);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.login-card {
+  width: min(90%, 430px);
+
+  padding: 40px 35px;
+
+  text-align: center;
+
+  background: transparent;
+
+  border: none;
+
+  border-radius: 0;
+
+  box-shadow: none;
+
+  animation:
+    loginFloat 4s ease-in-out infinite;
+}
+
+@keyframes loginFloat {
+
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+}
+
+.login-decoration {
+  color: #d62828;
+
+  font-size: 24px;
+
+  letter-spacing: 7px;
+
+  margin-bottom: 8px;
+}
+
+.login-card h1 {
+  margin: 0;
+
+  color: #c1121f;
+
+  font-size: 42px;
+
+  font-weight: 800;
+}
+
+
+/* BLACK SUBTITLE */
+
+.login-subtitle {
+  margin: 7px 0 28px;
+
+  color: #000000;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.input-group {
+  text-align: left;
+
+  margin-bottom: 17px;
+}
+
+.input-group label {
+  display: block;
+
+  margin: 0 0 7px 5px;
+
+  color: #b5121b;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+.input-group input {
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border: 2px solid #d62828;
+
+  border-radius: 15px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #8b0000;
+
+  font-family: "Nunito", sans-serif;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  transition: .2s;
+}
+
+.input-group input:focus {
+  border-color: #b5121b;
+
+  box-shadow:
+    0 0 0 4px rgba(214, 40, 40, .18);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button {
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 6px;
+
+  border: 3px solid #8b0000;
+
+  border-radius: 15px;
+
+  background: #d62828;
+
+  color: white;
+
+  font-family: "Nunito", sans-serif;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 0 #8b0000;
+
+  transition: .2s;
+}
+
+.login-button:hover {
+  background: #e63946;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 0 #8b0000;
+}
+
+.login-button:active {
+  transform: translateY(3px);
+
+  box-shadow:
+    0 2px 0 #8b0000;
+}
+
+#error {
+  min-height: 20px;
+
+  margin-top: 15px;
+
+  color: #b5121b;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   MAIN WEBSITE
+========================================================= */
+
+#mainScreen {
+  min-height: 100vh;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    url("game-bg.jpg")
+    center center /
+    cover
+    fixed
+    no-repeat;
+
+  opacity: 0;
+
+  transform: scale(1.06);
+
+  transition:
+    opacity 1.2s ease,
+    transform 1.2s ease;
+}
+
+#mainScreen.show {
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+
+/* =========================================================
+   BACKGROUND OVERLAY
+========================================================= */
+
+#mainScreen::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 0;
+
+  background:
+    rgba(255,255,255,.68);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.page {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  padding: 42px 25px 50px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+  max-width: 1050px;
+
+  margin: 0 auto 30px;
+
+  padding: 28px;
+
+  text-align: center;
+
+  background: rgba(255,255,255,.94);
+
+  border: 3px solid #d62828;
+
+  border-radius: 30px;
+
+  box-shadow:
+    0 8px 0 #a80f18,
+    0 15px 30px rgba(139,0,0,.15);
+
+  animation:
+    headerIn .9s ease forwards;
+}
+
+@keyframes headerIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-18px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+.header-top {
+  color: #d62828;
+
+  font-size: 23px;
+
+  letter-spacing: 8px;
+
+  margin-bottom: 3px;
+}
+
+.cherry-icon {
+  color: #b5121b;
+}
+
+header h1 {
+  margin: 0;
+
+  color: #c1121f;
+
+  font-size:
+    clamp(42px, 8vw, 68px);
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  text-shadow:
+    0 4px 0 rgba(214,40,40,.18);
+}
+
+header p {
+  margin: 6px 0 0;
+
+  color: #000000;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   GAMES
+========================================================= */
+
+.games {
+  width: 100%;
+
+  max-width: 1050px;
+
+  margin: auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(250px, 1fr));
+
+  gap: 23px;
+}
+
+
+/* =========================================================
+   GAME CARDS
+========================================================= */
+
+.game-card {
+
+  position: relative;
+
+  padding: 25px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 3px solid #d62828;
+
+  border-radius: 25px;
+
+  box-shadow:
+    0 7px 0 #a80f18,
+    0 14px 30px rgba(139,0,0,.16);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+
+  animation:
+    cardIn .7s ease backwards;
+}
+
+.game-card:nth-child(1) {
+  animation-delay: .15s;
+}
+
+.game-card:nth-child(2) {
+  animation-delay: .25s;
+}
+
+.game-card:nth-child(3) {
+  animation-delay: .35s;
+}
+
+.game-card:nth-child(4) {
+  animation-delay: .45s;
+}
+
+.game-card:nth-child(5) {
+  animation-delay: .55s;
+}
+
+@keyframes cardIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+.game-card:hover {
+
+  transform:
+    translateY(-6px);
+
+  box-shadow:
+    0 12px 0 #a80f18,
+    0 20px 35px rgba(139,0,0,.22);
+}
+
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
+
+.game-decoration {
+
+  color: #d62828;
+
+  font-size: 23px;
+
+  margin-bottom: 5px;
+}
+
+.game-card h2 {
+
+  margin:
+    4px 0 7px;
+
+  color: #c1121f;
+
+  font-size: 22px;
+
+  font-weight: 800;
+}
+
+.game-card p {
+
+  min-height: 42px;
+
+  margin:
+    0 0 18px;
+
+  color: #000000;
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   GAME BUTTON
+========================================================= */
+
+.play-button {
+
+  padding:
+    10px 24px;
+
+  border:
+    3px solid #8b0000;
+
+  border-radius:
+    14px;
+
+  background:
+    #d62828;
+
+  color:
+    white;
+
+  font-family:
+    "Nunito",
+    sans-serif;
+
+  font-size:
+    15px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 4px 0 #8b0000;
+
+  transition:
+    .2s;
+}
+
+.play-button:hover {
+
+  background:
+    #e63946;
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 6px 0 #8b0000;
+}
+
+.play-button:active {
+
+  transform:
+    translateY(2px);
+
+  box-shadow:
+    0 2px 0 #8b0000;
+}
+
+
+/* =========================================================
+   MINECRAFT SELECTOR
+========================================================= */
+
+#minecraftMenu {
+
+  display: none;
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 800;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    rgba(139,0,0,.35);
+
+  backdrop-filter: blur(5px);
+}
+
+#minecraftMenu.show {
+  display: flex;
+}
+
+.minecraft-box {
+
+  width: min(90%, 430px);
+
+  padding: 30px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 4px solid #d62828;
+
+  border-radius: 25px;
+
+  box-shadow:
+    0 8px 0 #8b0000,
+    0 20px 45px rgba(139,0,0,.25);
+
+  animation:
+    menuIn .25s ease;
+}
+
+@keyframes menuIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      scale(.9);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(1);
+  }
+
+}
+
+.minecraft-box h2 {
+
+  margin:
+    0 0 8px;
+
+  color:
+    #c1121f;
+
+  font-size:
+    28px;
+}
+
+.minecraft-box p {
+
+  margin:
+    0 0 20px;
+
+  color:
+    #000000;
+
+  font-weight:
+    700;
+
+  font-size:
+    14px;
+}
+
+.minecraft-option {
+
+  width: 100%;
+
+  margin:
+    7px 0;
+
+  padding:
+    12px;
+
+  border:
+    3px solid #d62828;
+
+  border-radius:
+    13px;
+
+  background:
+    #ffffff;
+
+  color:
+    #b5121b;
+
+  font-family:
+    "Nunito",
+    sans-serif;
+
+  font-size:
+    15px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 3px 0 #d62828;
+
+  transition:
+    .2s;
+}
+
+.minecraft-option:hover {
+
+  background:
+    #d62828;
+
+  color:
+    #ffffff;
+
+  transform:
+    translateY(-2px);
+}
+
+.minecraft-close {
+
+  margin-top:
+    15px;
+
+  padding:
+    9px 20px;
+
+  border:
+    2px solid #8b0000;
+
+  border-radius:
+    12px;
+
+  background:
+    #8b0000;
+
+  color:
+    white;
+
+  font-family:
+    "Nunito",
+    sans-serif;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+
+  margin-top:
+    30px;
+
+  text-align:
+    center;
+
+  color:
+    #000000;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   GAME PLAYER
+========================================================= */
+
+#player {
+
+  display:
+    none;
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    500;
+
+  background:
+    #ffffff;
+}
+
+#gameFrame {
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  border:
+    none;
+
+  display:
+    block;
+
+  background:
+    white;
+}
+
+
+/* =========================================================
+   PLAYER BUTTONS
+========================================================= */
+
+.player-buttons {
+
+  position:
+    absolute;
+
+  top:
+    15px;
+
+  right:
+    15px;
+
+  z-index:
+    600;
+
+  display:
+    flex;
+
+  gap:
+    8px;
+}
+
+.player-button {
+
+  border:
+    3px solid #8b0000;
+
+  border-radius:
+    13px;
+
+  padding:
+    10px 15px;
+
+  color:
+    white;
+
+  font-family:
+    "Nunito",
+    sans-serif;
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 4px 0 #5c0000;
+
+  transition:
+    .2s;
+}
+
+#original {
+
+  background:
+    #d62828;
+}
+
+#close {
+
+  background:
+    #8b0000;
+}
+
+.player-button:hover {
+
+  transform:
+    translateY(-2px);
+}
+
+
+/* =========================================================
+   PLAYER LOADING
+========================================================= */
+
+#loading {
+
+  display:
+    none;
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    550;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex-direction:
+    column;
+
+  background:
+    #ffffff;
+
+  color:
+    #b5121b;
+
+  font-size:
+    22px;
+
+  font-weight:
+    800;
+}
+
+.loading-decoration {
+
+  margin-bottom:
+    10px;
+
+  color:
+    #d62828;
+
+  font-size:
+    30px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .page {
+    padding:
+      25px 17px 40px;
+  }
+
+  header {
+    padding:
+      24px 17px;
+  }
+
+  .games {
+    grid-template-columns:
+      1fr;
+  }
+
+  .player-buttons {
+
+    top:
+      9px;
+
+    right:
+      9px;
+  }
+
+  .player-button {
+
+    padding:
+      8px 10px;
+
+    font-size:
+      12px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     LOGIN
+======================================================= -->
+
+<div id="loginScreen">
+
+  <div class="login-card">
+
+    <div class="login-decoration">
+      🇨🇦
+    </div>
+
+    <h1>hi</h1>
+
+    <div class="login-subtitle">
+      canada from hetalia built it all from a empty room -deltarune refrence
+    </div>
+
+    <form id="loginForm">
+
+      <div class="input-group">
+
+        <label for="username">
+          username
+        </label>
+
+        <input
+          id="username"
+          type="text"
+          placeholder="enter your username"
+          autocomplete="off"
+          required
+        >
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label for="password">
+          password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          placeholder="enter your password"
+          required
+        >
+
+      </div>
+
+
+      <button
+        class="login-button"
+        type="submit">
+
+        go in 🍁
+
+      </button>
+
+
+      <div id="error"></div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     MAIN WEBSITE
+======================================================= -->
+
+<div id="mainScreen">
+
+  <div class="page">
+
+
+    <!-- HEADER -->
+
+    <header>
+
+      <div class="header-top">
+
+        <span class="cherry-icon">※</span>
+
+        🇨🇦
+
+        <span class="cherry-icon">※</span>
+
+      </div>
+
+      <h1>
+        canada hub
+      </h1>
+
+      <p>
+        who are you? "im canada!!"
+      </p>
+
+    </header>
+
+
+    <!-- =================================================
+         ALL 5 GAME CARDS
+    ================================================== -->
+
+    <div class="games">
+
+
+      <!-- =================================================
+           GAME 1 — RETRO GAMES
+      ================================================== -->
+
+      <div class="game-card">
+
+        <div class="game-decoration">
+          🇨🇦
+        </div>
+
+        <h2>
+          retro games
+        </h2>
+
+        <p>
+          classic games in the game player
+        </p>
+
+        <button
+          class="play-button"
+          onclick="openGame(
+            'https://classicgamezone.com/',
+            'player'
+          )">
+
+          Play
+
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           GAME 2 — NAUTILUS OS
+      ================================================== -->
+
+      <div class="game-card">
+
+        <div class="game-decoration">
+          🇨🇦
+        </div>
+
+        <h2>
+          nautilus os
+        </h2>
+
+        <p>
+          cute little computer inside a website!
+        </p>
+
+        <button
+          class="play-button"
+          onclick="openGame(
+            'https://nautilus-os.netlify.app',
+            'player'
+          )">
+
+          Play
+
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           GAME 3 — STRONG DOG
+      ================================================== -->
+
+      <div class="game-card">
+
+        <div class="game-decoration">
+          🇨🇦
+        </div>
+
+        <h2>
+          strong dog
+        </h2>
+
+        <p>
+          lots and lots of games!
+        </p>
+
+        <button
+          class="play-button"
+          onclick="openGame(
+            'https://gametreexp.github.io',
+            'player'
+          )">
+
+          Play
+
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           GAME 4 — MINECRAFT
+      ================================================== -->
+
+      <div class="game-card">
+
+        <div class="game-decoration">
+          🇨🇦
+        </div>
+
+        <h2>
+          minecraft
+        </h2>
+
+        <p>
+          eaglercraft
+        </p>
+
+        <button
+          class="play-button"
+          onclick="openMinecraftMenu()">
+
+          Play
+
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           GAME 5 — WATCH DOCUMENTARIES
+      ================================================== -->
+
+      <div class="game-card">
+
+        <div class="game-decoration">
+          🇨🇦
+        </div>
+
+        <h2>
+          watch docs
+        </h2>
+
+        <p>
+          let the world just pat me bye bye
+        </p>
+
+        <button
+          class="play-button"
+          onclick="openGame(
+            'https://watchdocumentaries.com',
+            'redirect'
+          )">
+
+          Play
+
+        </button>
+
+      </div>
+
+
+    </div>
+
+
+    <footer>
+      made with chatgpt
+    </footer>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     MINECRAFT SELECTOR
+======================================================= -->
+
+<div id="minecraftMenu">
+
+  <div class="minecraft-box">
+
+    <h2>
+      Minecraft
+    </h2>
+
+    <p>
+      select one to continue!
+    </p>
+
+    <!-- MINECRAFT 2022 -->
+
+    <button
+      class="minecraft-option"
+      onclick="openGame(
+        'https://johntherriiiippper.github.io/Eaglercraft%201.5.2.html',
+        'redirect'
+      )">
+
+      Minecraft 2022
+
+    </button>
+
+    
+    <!-- MINECRAFT 2023 -->
+
+    <button
+      class="minecraft-option"
+      onclick="openGame(
+        'https://johntherriiiippper.github.io/eaglercraftx.html',
+        'redirect'
+      )">
+
+      Minecraft 2023
+
+    </button>
+
+
+    <!-- MINECRAFT 2025 -->
+
+    <button
+      class="minecraft-option"
+      onclick="openGame(
+        'https://shimmering-druid-bd9704.netlify.app',
+        'redirect'
+      )">
+
+      Minecraft 2025
+
+    </button>
+
+    <button
+      class="minecraft-close"
+      onclick="closeMinecraftMenu()">
+
+      Cancel
+
+    </button>
+
+    
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     GAME PLAYER
+======================================================= -->
+
+<div id="player">
+
+  <div class="player-buttons">
+
+    <button
+      id="original"
+      class="player-button"
+      onclick="viewOriginal()">
+
+      ↗ Original Website
+
+    </button>
+
+
+    <button
+      id="close"
+      class="player-button"
+      onclick="closeGame()">
+
+      ✕ Close
+
+    </button>
+
+  </div>
+
+
+  <div id="loading">
+
+    <div class="loading-decoration">
+      🍁
+    </div>
+
+    loading...
+
+  </div>
+
+
+  <iframe
+    id="gameFrame"
+    allowfullscreen
+    title="Game Player">
+  </iframe>
+
+</div>
+
+
+<script>
+
+
+/* =========================================================
+   LOGIN ACCOUNTS
+
+   ADD MORE ACCOUNTS LIKE THIS:
+
+   {
+     username: "newusername",
+     password: "newpassword"
+   }
+========================================================= */
+
+const accounts = [
+
+  {
+    username: "sodacream",
+    password: "creamsoda"
+  },
+
+  {
+    username: "alex",
+    password: "55660011"
+  }
+
+];
+
+
+document
+  .getElementById("loginForm")
+  .addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    const username =
+      document
+        .getElementById("username")
+        .value
+        .trim();
+
+
+    const password =
+      document
+        .getElementById("password")
+        .value;
+
+
+    const error =
+      document.getElementById("error");
+
+
+    const loginScreen =
+      document.getElementById("loginScreen");
+
+
+    const mainScreen =
+      document.getElementById("mainScreen");
+
+
+    const validAccount =
+      accounts.some(function(account) {
+
+        return (
+          account.username === username &&
+          account.password === password
+        );
+
+      });
+
+
+    if (validAccount) {
+
+      error.textContent = "";
+
+      mainScreen.classList.add("show");
+
+
+      setTimeout(function() {
+
+        loginScreen.classList.add("hide");
+
+      }, 250);
+
+    }
+
+    else {
+
+      error.textContent =
+        "hm... wrong username or password (｡•́︿•̀｡)";
+
+    }
+
+  });
+
+
+/* =========================================================
+   MINECRAFT MENU
+========================================================= */
+
+function openMinecraftMenu() {
+
+  document
+    .getElementById("minecraftMenu")
+    .classList.add("show");
+
+}
+
+
+function closeMinecraftMenu() {
+
+  document
+    .getElementById("minecraftMenu")
+    .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   CURRENT GAME
+========================================================= */
+
+let currentGameURL = "";
+
+
+/* =========================================================
+   OPEN GAME
+========================================================= */
+
+function openGame(url, mode) {
+
+  currentGameURL = url;
+
+
+  /*
+    Close Minecraft selector
+  */
+
+  closeMinecraftMenu();
+
+
+  /*
+    REDIRECT MODE
+  */
+
+  if (mode === "redirect") {
+
+    window.open(
+      url,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    return;
+  }
+
+
+  /*
+    PLAYER MODE
+  */
+
+  const player =
+    document.getElementById("player");
+
+
+  const frame =
+    document.getElementById("gameFrame");
+
+
+  const loading =
+    document.getElementById("loading");
+
+
+  player.style.display =
+    "block";
+
+
+  document.body.style.overflow =
+    "hidden";
+
+
+  loading.style.display =
+    "flex";
+
+
+  frame.src = "";
+
+
+  setTimeout(function() {
+
+    frame.src =
+      currentGameURL;
+
+  }, 100);
+
+}
+
+
+/* =========================================================
+   GAME LOADED
+========================================================= */
+
+document
+  .getElementById("gameFrame")
+  .addEventListener("load", function() {
+
+    document
+      .getElementById("loading")
+      .style.display =
+      "none";
+
+  });
+
+
+/* =========================================================
+   ORIGINAL WEBSITE
+========================================================= */
+
+function viewOriginal() {
+
+  if (currentGameURL !== "") {
+
+    window.open(
+      currentGameURL,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CLOSE PLAYER
+========================================================= */
+
+function closeGame() {
+
+  const frame =
+    document.getElementById("gameFrame");
+
+
+  const player =
+    document.getElementById("player");
+
+
+  frame.src = "";
+
+
+  player.style.display =
+    "none";
+
+
+  document.body.style.overflow =
+    "";
+
+
+  currentGameURL = "";
+
+}
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (event.key === "Escape") {
+
+      closeGame();
+
+      closeMinecraftMenu();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   CLOSE MINECRAFT MENU
+   BY CLICKING OUTSIDE
+========================================================= */
+
+document
+  .getElementById("minecraftMenu")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        document.getElementById("minecraftMenu")
+      ) {
+
+        closeMinecraftMenu();
+
+      }
+
+    }
+  );
+
+
+</script>
+
+</body>
+</html>
